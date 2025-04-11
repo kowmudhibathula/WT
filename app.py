@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 # MongoDB Setup
-client = MongoClient('mongodb://localhost:27017/')
+client = MongoClient('mongodb+srv://Aishwarya:aishu%402004@cluster-1.tjgkz2l.mongodb.net/?retryWrites=true&w=majority')
 db = client['movie_db']
 movies_collection = db['movies']
 
