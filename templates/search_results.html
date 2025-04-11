@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(to right, #0f0f0f, #1a1a1a);
+            color: #FFD700;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            animation: slideDown 0.8s ease-in-out;
+            color: #FFD700;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+        }
+
+        .movie-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 18px;
+            padding: 25px;
+            margin: 20px auto;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.15);
+            backdrop-filter: blur(10px);
+            animation: popIn 0.5s ease-in-out;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .movie-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .movie-card img {
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #FFD700;
+        }
+
+        .movie-card h2 {
+            margin-top: 0;
+            font-size: 1.8em;
+            color: #fff;
+        }
+
+        .movie-card p {
+            margin: 8px 0;
+            color: #eee;
+        }
+
+        .movie-card p strong {
+            color: #FFD700;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-top: 10px;
+            color: #fff;
+        }
+
+        ul li {
+            margin-bottom: 6px;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #ccc;
+            margin-top: 40px;
+            font-size: 1.2em;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 40px;
+            padding: 12px 25px;
+            background-color: #FFD700;
+            color: #111;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 10px;
+            width: max-content;
+            margin-left: auto;
+            margin-right: auto;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #fff176;
+            transform: scale(1.05);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.96); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .movie-card {
+                padding: 20px;
+            }
+
+            .movie-card h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Results for "{{ query }}"</h1>
+
+    {% set found = false %}
+    {% for movie in movies %}
+        {% set found = true %}
+        <div class="movie-card">
+            <h2>{{ movie.title }}</h2>
+            <img src="{{ url_for('static', filename='uploads/' + movie.image_filename) }}" alt="{{ movie.title }}">
+            <p><strong>Genre:</strong> {{ movie.genre }}</p>
+            <p><strong>Location:</strong> {{ movie.location }}</p>
+            <p><strong>Description:</strong> {{ movie.meta_description }}</p>
+            <p><strong>Reviews:</strong></p>
+            <ul>
+                {% for review in movie.reviews %}
+                    <li>{{ review }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+
+    {% if not found %}
+        <p class="no-results">No movie found.</p>
+    {% endif %}
+
+    <a href="{{ url_for('index') }}">← Back to Home</a>
+</body>
+</html>
