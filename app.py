@@ -79,7 +79,7 @@ def genre_movies(genre_name):
 def movie_detail(movie_id):
     movie = movies_collection.find_one({'_id': ObjectId(movie_id)})
     if not movie:
-        return "Movie not found", 404
+        return "", 404
     genres = sorted(set(normalize_genre(movie['genre']) for movie in movies_collection.find()))
     return render_template('movie_detail.html', movie=movie, genres=genres)
 
